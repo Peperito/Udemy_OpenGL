@@ -46,18 +46,31 @@ def reset_turtle():
     direction = np.array([0, 1, 0])
 
 
+# Modified from original to leptosporangiate fern
 def draw_turtle():
     global x, y
     points.append((x, y))
     r = np.random.rand()
-    if r < 0.1:
-        x, y = 0.00 * x + 0.00 * y + 0.0, 0.00 * x + 0.16 * y + 0.0
+    if r < 0.02:
+        x, y = 0.00 * x + 0.00 * y + 0.0, 0.00 * x + 0.25 * y - 0.4
     elif r < 0.86:
-        x, y = 0.85 * x + 0.04 * y + 0.0, -0.04 * x + 0.85 * y + 1.6
+        x, y = 0.95 * x + 0.005 * y - 0.002, -0.005 * x + 0.93 * y + 0.5
     elif r < 0.93:
-        x, y = 0.2 * x - 0.26 * y + 0.0, 0.23 * x + 0.22 * y + 1.6
+        x, y = 0.035 * x - 0.2 * y - 0.09, 0.16 * x + 0.04 * y + 0.02
     else:
-        x, y = -0.15 * x + 0.28 * y + 0.0, 0.26 * x + 0.24 * y + 0.44
+        x, y = -0.04 * x + 0.2 * y + 0.083, 0.16 * x + 0.04 * y + 0.12
+
+
+def draw_turtle_2():
+    global x, y
+    points.append((x, y))
+    r = np.random.rand()
+    if r < 0.33:
+        x, y = 0.5 * x + 0.00 * y + 0.0, 0.0 * x + 0.5 * y + 0.5
+    elif r < 0.66:
+        x, y = 0.5 * x + 0.00 * y + 0.5, 0.0 * x + 0.5 * y + 0.0
+    else:
+        x, y = 0.5 * x + 0.00 * y + 0.0, 0.0 * x + 0.5 * y + 0.0
 
 
 init_ortho()
@@ -73,7 +86,7 @@ while not done:
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
-    glScaled(80, 80, 1)
+    glScaled(200, 120, 1)
     reset_turtle()
     draw_turtle()
     draw_points()
