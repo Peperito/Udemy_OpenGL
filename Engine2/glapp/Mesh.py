@@ -1,6 +1,6 @@
 from OpenGL import *
 import pygame
-from GraphicsData import *
+from Engine2.glapp.GraphicsData import *
 import numpy as np
 
 
