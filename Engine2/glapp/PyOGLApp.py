@@ -21,47 +21,8 @@ class PyOGLApp():
 
         self.screen = pygame.display.set_mode((screen_width, screen_height), DOUBLEBUF | OPENGL)
         pygame.display.set_caption('OpenGL in Python')
-        self.camera = Camera()
+        self.camera = None
         self.program_id = None
-
-    def draw_world_axes(self):
-        glLineWidth(4)
-        glBegin(GL_LINES)
-        glColor(1, 0, 0)
-        glVertex3d(-1000, 0, 0)
-        glVertex3d(1000, 0, 0)
-        glColor(0, 1, 0)
-        glVertex3d(0, -1000, 0)
-        glVertex3d(0, 1000, 0)
-        glColor(0, 0, 1)
-        glVertex3d(0, 0, -1000)
-        glVertex3d(0, 0, 1000)
-        glEnd()
-
-        # x pos sphere
-        sphere = gluNewQuadric()
-        glColor(1, 0, 0)
-        glPushMatrix()
-        glTranslated(1, 0, 0)
-        gluSphere(sphere, 0.05, 10, 10)
-        glPopMatrix()
-        # y pos sphere
-        sphere = gluNewQuadric()
-        glColor(0, 1, 0)
-        glPushMatrix()
-        glTranslated(0, 1, 0)
-        gluSphere(sphere, 0.05, 10, 10)
-        glPopMatrix()
-        # z pos sphere
-        sphere = gluNewQuadric()
-        glColor(0, 0, 1)
-        glPushMatrix()
-        glTranslated(0, 0, 1)
-        gluSphere(sphere, 0.05, 10, 10)
-        glPopMatrix()
-
-        glLineWidth(1)
-        glColor(1, 1, 1)
 
     def initialise(self):
         pass

@@ -1,4 +1,5 @@
 from OpenGL.GL import *
+import numpy as np
 
 
 def compile_shader(shader_type, shader_source):
@@ -28,3 +29,12 @@ def create_program(vertex_shader_code, fragment_shader_code):
     glDeleteShader(vertex_shader_id)
     glDeleteShader(fragment_shader_id)
     return program_id
+
+
+def format_vertices(coordinates, triangles):
+    all_triangles = []
+    for t in range(0, len(triangles), 3):
+        all_triangles.append(coordinates[triangles[t]])
+        all_triangles.append(coordinates[triangles[t + 1]])
+        all_triangles.append(coordinates[triangles[t + 2]])
+    return np.array(all_triangles, np.float32)

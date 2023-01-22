@@ -73,12 +73,16 @@ def scale3(matrix, x, y, z):
     return matrix @ sc
 
 
-def rotate(matrix, angle, axis):
+def rotate(matrix, angle, axis, local=True):
     rot = identity_mat()
     if axis == "X":
         rot = pitch_mat(angle)
-    if axis == "Y":
+    elif axis == "Y":
         rot = yaw_mat(angle)
-    if axis == "Z":
+    elif axis == "Z":
         rot = roll_mat(angle)
-    return matrix @ rot
+
+    if local:
+        return matrix @ rot
+    else:
+        return rot @ matrix
