@@ -1,10 +1,7 @@
-import pygame
 from pygame.locals import *
-from OpenGL.GL import *
-from OpenGL.GLU import *
 from Cube import *
 from LoadMesh import *
-from Camera import *
+from Engine.glapp.Camera import *
 
 pygame.init()
 
@@ -17,7 +14,10 @@ drawing_color = (1, 1, 1, 1)
 screen = pygame.display.set_mode((screen_width, screen_height), DOUBLEBUF | OPENGL)
 pygame.display.set_caption('OpenGL in Python')
 
-cube = Cube(GL_LINE_LOOP)
+cube = Cube(GL_LINE_LOOP, position=pygame.Vector3(2, 0, 0), rotation=Rotation(45, pygame.Vector3(1, 1, 1)),
+            scale=pygame.Vector3(0.5, 0.5, 0.5))
+cube2 = Cube(GL_LINE_LOOP, position=pygame.Vector3(2, 0, 0), rotation=Rotation(45, pygame.Vector3(1, 1, 1)),
+             scale=pygame.Vector3(2, 2, 2))
 mesh = LoadMesh("./objs/teapot.obj", GL_LINE_LOOP)
 camera = Camera()
 
@@ -85,9 +85,9 @@ def display():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     camera_init()
     draw_world_axes()
-    glTranslated(2, 0, 0)
-    glRotatef(45, 0, 2, 0)
+    glRotated(45, 0, 0, 1)
     cube.draw()
+    cube2.draw()
 
 
 done = False
