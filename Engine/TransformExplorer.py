@@ -14,7 +14,7 @@ drawing_color = (1, 1, 1, 1)
 screen = pygame.display.set_mode((screen_width, screen_height), DOUBLEBUF | OPENGL)
 pygame.display.set_caption('Transformations in Python')
 cube = Cube(GL_LINE_LOOP)
-mesh = LoadMesh("./objs/teapot.obj", GL_LINE_LOOP)
+mesh = LoadMesh("../Engine2/objs/teapot.obj", GL_LINE_LOOP)
 
 eye = [0, 0, 0]
 

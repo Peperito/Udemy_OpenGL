@@ -12,7 +12,7 @@ class Camera:
         self.last_mouse = pygame.math.Vector2(0, 0)
         self.mouse_sensitivityX = 0.1
         self.mouse_sensitivityY = 0.1
-        self.key_sensitivity = 0.008
+        self.key_sensitivity = 0.05
         self.projection_mat = self.perspective_mat(60, w / h, 0.01, 10000)
         self.projection = Uniform("mat4", self.projection_mat)
         self.projection.find_variable(program_id, "projection_mat")
@@ -49,7 +49,7 @@ class Camera:
         mouse_change = self.last_mouse - pygame.math.Vector2(mouse_pos)
         pygame.mouse.set_pos(self.screen_width / 2, self.screen_height / 2)
         self.last_mouse = pygame.mouse.get_pos()
-        self.rotate(-mouse_change.x * self.mouse_sensitivityX, mouse_change.y * self.mouse_sensitivityY)
+        self.rotate(mouse_change.x * self.mouse_sensitivityX, mouse_change.y * self.mouse_sensitivityY)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_DOWN]:

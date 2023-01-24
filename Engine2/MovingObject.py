@@ -1,3 +1,7 @@
+import time
+
+import pygame
+
 from glapp.PyOGLApp import *
 from glapp.GraphicsData import *
 import numpy as np
@@ -39,23 +43,18 @@ class Projections(PyOGLApp):
 
     def __init__(self):
         super().__init__(850, 200, 1000, 800)
-        self.triangle = None
-        self.square = None
         self.world_axes = None
-        self.cube = None
-        self.teapot = None
         self.moving_cube = None
+        self.teapot = None
 
     def initialise(self):
         self.program_id = create_program(vertex_shader, fragment_shader)
-        self.triangle = ChristmasTriangle(self.program_id, location=pygame.Vector3(-1, 1, 0))
-        self.square = Square(self.program_id, location=pygame.Vector3(0.5, -0.5, 0))
         self.world_axes = WorldAxes(self.program_id, location=pygame.Vector3(0, 0, 0))
-        self.cube = Cube(self.program_id)
+        self.moving_cube = LoadMesh("./objs/cube.obj", self.program_id,
+                                    move_translation=pygame.Vector3(0, 0.001, 0))
         self.teapot = LoadMesh("./objs/teapot.obj", self.program_id,
-                               scale=pygame.Vector3(5, 10, 5),
-                               rotation=Rotation(45, pygame.Vector3(1, 0, 1)))
-        self.moving_cube = MovingCube(self.program_id, location=pygame.Vector3(0.5, 0.5, 0.5))
+                               move_scale=pygame.Vector3(1.01, 1.01, 1.01),
+                               move_translation=pygame.Vector3(0.1, 0, 0))
         self.camera = Camera(self.program_id, self.screen_width, self.screen_height)
         glEnable(GL_DEPTH_TEST)
 
@@ -66,9 +65,6 @@ class Projections(PyOGLApp):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glUseProgram(self.program_id)
         self.camera.update()
-        #self.triangle.draw()
-        #self.square.draw()
-        #self.cube.draw()
         self.world_axes.draw()
         #self.teapot.draw()
         self.moving_cube.draw()

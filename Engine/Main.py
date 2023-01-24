@@ -18,7 +18,7 @@ cube = Cube(GL_LINE_LOOP, position=pygame.Vector3(2, 0, 0), rotation=Rotation(45
             scale=pygame.Vector3(0.5, 0.5, 0.5))
 cube2 = Cube(GL_LINE_LOOP, position=pygame.Vector3(2, 0, 0), rotation=Rotation(45, pygame.Vector3(1, 1, 1)),
              scale=pygame.Vector3(2, 2, 2))
-mesh = LoadMesh("./objs/teapot.obj", GL_LINE_LOOP)
+mesh = LoadMesh("../Engine2/objs/teapot.obj", GL_LINE_LOOP)
 camera = Camera()
 
 
