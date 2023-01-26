@@ -6,10 +6,6 @@ from glapp.PyOGLApp import *
 from glapp.GraphicsData import *
 import numpy as np
 from glapp.Utils import *
-from glapp.Square import *
-from glapp.WorldAxes import *
-from glapp.ChristmasTriangle import *
-from glapp.Cube import *
 from glapp.LoadMesh import *
 from glapp.MovingCube import *
 from glapp.Light import *
@@ -19,6 +15,7 @@ vertex_shader = r'''
 in vec3 position;
 in vec3 vertex_color;
 in vec3 vertex_normal;
+in vec2 vertex_uv;
 uniform mat4 projection_mat;
 uniform mat4 model_mat;
 uniform mat4 view_mat;
@@ -26,6 +23,7 @@ out vec3 color;
 out vec3 normal;
 out vec3 frag_pos;
 out vec3 view_pos;
+out vec2 UV;
 void main() 
 {
     view_pos = vec3(inverse(model_mat) * 
@@ -34,6 +32,7 @@ void main()
     normal = mat3(transpose(inverse(model_mat))) * vertex_normal;
     frag_pos = vec3(model_mat * vec4(position, 1));
     color = vertex_color;
+    UV = vertex_uv;
 }
 '''
 
@@ -44,6 +43,9 @@ in vec3 normal;
 in vec3 frag_pos;
 in vec3 view_pos;
 out vec4 frag_color;
+
+in vec2 UV;
+uniform sampler2D tex;
 
 struct light {
     vec3 position;
@@ -81,6 +83,7 @@ void main()
     for(int i = 0; i < NUM_LIGHTS; i++){
         frag_color += Create_Light(light_data[i].position, light_data[i].color, normal, frag_pos, view_dir); 
     }
+    frag_color = frag_color * texture(tex, UV);
 }
 '''
 
@@ -89,24 +92,22 @@ class ShadedObject(PyOGLApp):
 
     def __init__(self):
         super().__init__(850, 200, 1000, 800)
-        #self.world_axes = None
-        self.teapot = None
+        # self.world_axes = None
         self.light = None
-        self.light_2 = None
-        self.light_3 = None
+        self.plane = None
+        self.cube = None
+        glEnable(GL_CULL_FACE)
 
     def initialise(self):
         self.program_id = create_program(vertex_shader, fragment_shader)
-        #self.world_axes = WorldAxes(self.program_id, location=pygame.Vector3(0, 0, 0))
-        self.teapot = LoadMesh("./objs/teapot.obj", self.program_id,
-                               location=pygame.Vector3(0, 0, 0),
-                               scale=pygame.Vector3(0.5, 0.5, 0.5),
-                               move_rotation=Rotation(1, pygame.Vector3(0, 1, 0)))
-        self.light = Light(self.program_id, pygame.Vector3(3, 3, 3), pygame.Vector3(1, 0, 1), 0)
-        self.light_2 = Light(self.program_id, pygame.Vector3(-3, 3, 3), pygame.Vector3(0, 1, 0), 1)
-        self.light_3 = Light(self.program_id, pygame.Vector3(0, 4, 4), pygame.Vector3(1, 0, 1), 2)
+        self.plane = LoadMesh("./objs/plane.obj", "./images/window.png", self.program_id)
+        self.cube = LoadMesh("./objs/cube.obj", "./images/crate.png", self.program_id,
+                             location=pygame.Vector3(0, -1, 0))
+        self.light = Light(self.program_id, pygame.Vector3(0, 1, 0), pygame.Vector3(1, 1, 1), 0)
         self.camera = Camera(self.program_id, self.screen_width, self.screen_height)
         glEnable(GL_DEPTH_TEST)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
     def camera_init(self):
         pass
@@ -116,10 +117,8 @@ class ShadedObject(PyOGLApp):
         glUseProgram(self.program_id)
         self.camera.update()
         self.light.update()
-        self.light_2.update()
-        self.light_3.update()
-        #self.world_axes.draw()
-        self.teapot.draw()
+        self.cube.draw()
+        self.plane.draw()
 
 
 ShadedObject().mainloop()

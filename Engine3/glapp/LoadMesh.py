@@ -1,19 +1,21 @@
 import random
-from Engine2.glapp.Utils import *
+from Engine3.glapp.Utils import *
 from OpenGL.GL import *
-from Engine2.glapp.Mesh import *
-from Engine2.glapp.Transformations import *
+from Engine3.glapp.Mesh import *
+from Engine3.glapp.Transformations import *
 import pygame
 
 
 class LoadMesh(Mesh):
-    def __init__(self, filename, imagefile, program_id, draw_type=GL_TRIANGLES,
+    def __init__(self, filename, imagefile, draw_type=GL_TRIANGLES,
                  location=pygame.Vector3(0, 0, 0),
                  rotation=Rotation(0, pygame.Vector3(0, 1, 0)),
                  scale=pygame.Vector3(1, 1, 1),
                  move_rotation=Rotation(0, pygame.Vector3(0, 1, 0)),
                  move_translation=pygame.Vector3(0, 0, 0),
-                 move_scale=pygame.Vector3(1, 1, 1)):
+                 move_scale=pygame.Vector3(1, 1, 1),
+                 material=None
+                 ):
         coordinates, triangles, uvs, uvs_ind, normals, normal_ind = self.load_drawing(filename)
         vertices = format_vertices(coordinates, triangles)
         vertex_normals = format_vertices(normals, normal_ind)
@@ -23,11 +25,19 @@ class LoadMesh(Mesh):
             colors.append(1)
             colors.append(1)
             colors.append(1)
-        super().__init__(program_id, vertices, imagefile, vertex_normals, vertex_uvs, colors, draw_type,
-                         location, rotation, scale,
+        super().__init__(vertices,
+                         imagefile=imagefile,
+                         vertex_normals=vertex_normals,
+                         vertex_uvs=vertex_uvs,
+                         vertex_colors=colors,
+                         draw_type=draw_type,
+                         translation=location,
+                         rotation=rotation,
+                         scale=scale,
                          move_rotation=move_rotation,
                          move_translation=move_translation,
-                         move_scale=move_scale)
+                         move_scale=move_scale,
+                         material=material)
 
     def load_drawing(self, filename):
         vertices = []
