@@ -1,4 +1,6 @@
-# Udemy OpenGL Introduction with Python
+# OpenGL Introduction with Python
 
-## Exploration of shaders to apply later in WGPU
+## Based on Udemy class from Penny de Bil and Holistic3D.com
+
+Classic graphics programming introduction with shaders, lin. algebra and OpenGl 3.3
 
